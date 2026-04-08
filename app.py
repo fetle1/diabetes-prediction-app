@@ -1,7 +1,21 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+import joblib
 
+# Load your trained model
+loaded_model = joblib.load("gradient_boosting_model.joblib")
+
+# Create pipeline
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('model', loaded_model)
+])
+
+# Save pipeline
+joblib.dump(pipeline, "pipeline_model.joblib")
 # Load the pipeline (scaler + model)
 pipeline = joblib.load("pipeline_model.joblib")
 
