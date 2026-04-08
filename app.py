@@ -4,7 +4,7 @@ import pandas as pd
 
 # Load model and scaler
 model = joblib.load("gradient_boosting_model.joblib")
-scaler = joblib.load("scaler.joblib")
+
 
 # App Title
 st.title("Diabetes Risk Prediction App")
