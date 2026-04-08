@@ -13,6 +13,7 @@ pipeline = Pipeline([
 
 joblib.dump(pipeline, "pipeline_model.joblib")
 # Load model and scaler
+model = joblib.load("gradient_boosting_model.joblib")
 
 
 # App Title
