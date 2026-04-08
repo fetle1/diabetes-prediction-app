@@ -29,6 +29,7 @@ sugary_food = st.selectbox(
     format_func=lambda x: "Yes" if x == 1 else "No"
 )
 
+
 # Prediction
 if st.button("Predict"):
 
