@@ -42,8 +42,8 @@ if st.button("Predict"):
     })
 
     # Fixed
-        prediction = model.predict(input_data)
-        probability = model.predict_proba(input_data)[0][1]
+    prediction = model.predict(input_data)
+    probability = model.predict_proba(input_data)[0][1]
 
     st.subheader("Prediction Result")
 
