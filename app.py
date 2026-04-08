@@ -41,10 +41,9 @@ if st.button("Predict"):
         'Sugary_food': [sugary_food]
     })
 
-    scaled_data = scaler.transform(input_data)
-
-    prediction = model.predict(scaled_data)[0]
-    probability = model.predict_proba(scaled_data)[0][1]
+    # Fixed
+        prediction = model.predict(input_data)
+        probability = model.predict_proba(input_data)[0][1]
 
     st.subheader("Prediction Result")
 
