@@ -1,63 +1,33 @@
 import streamlit as st
-import joblib
 import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 import joblib
 
-# Create a pipeline combining scaling + model
-pipeline = Pipeline([
-    ('scaler', StandardScaler()),
-    ('model', gradient_boosting_model)
-])
+# Load the pipeline (scaler + model)
+pipeline = joblib.load("pipeline_model.joblib")
 
-joblib.dump(pipeline, "pipeline_model.joblib")
-# Load model and scaler
-model = joblib.load("gradient_boosting_model.joblib")
-
-
-# App Title
 st.title("Diabetes Risk Prediction App")
 st.write("Enter patient details below to assess diabetes risk")
 
-# User Inputs
+# User inputs
 age = st.number_input("Age", min_value=0, max_value=120, value=30)
-
 triglyceride = st.number_input("Triglyceride (mg/dL)", min_value=0.0, value=150.0)
 cholesterol = st.number_input("Total Cholesterol (mg/dL)", min_value=0.0, value=180.0)
 hdl = st.number_input("HDL (mg/dL)", min_value=0.0, value=50.0)
+avoid_eating_out = st.selectbox("Do you avoid eating out frequently?", [0,1], format_func=lambda x: "Yes" if x==1 else "No")
+sugary_food = st.selectbox("Do you frequently consume sugary foods?", [0,1], format_func=lambda x: "Yes" if x==1 else "No")
 
-avoid_eating_out = st.selectbox(
-    "Do you avoid eating out frequently?",
-    options=[0, 1],
-    format_func=lambda x: "Yes" if x == 1 else "No"
-)
-
-sugary_food = st.selectbox(
-    "Do you frequently consume sugary foods?",
-    options=[0, 1],
-    format_func=lambda x: "Yes" if x == 1 else "No"
-)
-
-
-# Prediction
 if st.button("Predict"):
+    input_data = pd.DataFrame([[
+        triglyceride, age, cholesterol, hdl, avoid_eating_out, sugary_food
+    ]], columns=[
+        'Triglyceride','Age','Cholesterol','HDL','Avoid_eating_out','Sugary_food'
+    ])
 
-    input_data = pd.DataFrame({
-        'Triglyceride': [triglyceride],
-        'Age': [age],
-        'Cholesterol': [cholesterol],
-        'HDL': [hdl],
-        'Avoid_eating_out': [avoid_eating_out],
-        'Sugary_food': [sugary_food]
-    })
-
-    # Fixed
-    prediction = model.predict(input_data)
-    probability = model.predict_proba(input_data)[0][1]
+    # Make prediction
+    prediction = pipeline.predict(input_data)[0]
+    probability = pipeline.predict_proba(input_data)[0][1]
 
     st.subheader("Prediction Result")
-
     if prediction == 1:
         st.error(f"⚠️ High Risk of Diabetes\n\nProbability: {probability:.2f}")
     else:
