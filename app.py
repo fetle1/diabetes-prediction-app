@@ -10,7 +10,7 @@ loaded_model = joblib.load("gradient_boosting_model.joblib")
 
 # Create pipeline
 pipeline = Pipeline([
-    ('scaler', StandardScaler()),
+    
     ('model', loaded_model)
 ])
 
